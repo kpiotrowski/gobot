@@ -40,6 +40,8 @@ const (
 	MotionDetected = "motion-detected"
 	// MotionStopped event
 	MotionStopped = "motion-stopped"
+	// Limit Switch end detected
+	EndDetected = "end-detected"
 )
 
 // PwmWriter interface represents an Adaptor which has Pwm capabilities
