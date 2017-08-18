@@ -23,6 +23,12 @@ var (
 	// ErrServoOutOfRange is the error resulting when a driver attempts to use
 	// hardware capabilities which a connection does not support
 	ErrServoOutOfRange = errors.New("servo angle must be between 0-180")
+	// ErrStepperMotorOutOfRange is the error resulting when a driver attempts to use
+	// hardware capabilities which a connection does not support
+	ErrStepperMotorOutOfRange = errors.New("Stepper motor tried to move out of range")
+	// ErrStepperMotorEndstopUnsupported is the error resulting when a driver attempts to use
+	// hardware capabilities which a connection does not support
+	ErrStepperMotorEndstopUnsupported = errors.New("Endstops were not correctly defined for stepper motor")
 )
 
 const (

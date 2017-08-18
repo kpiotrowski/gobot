@@ -4,24 +4,28 @@ import (
 	"gobot.io/x/gobot"
 )
 
+type LimitSwitchDriverInterface interface {
+	EndDetected() (bool, error)
+}
+
 type LimitSwitchDriver struct {
-	pin        string
-	name       string
+	pin         string
+	name        string
 	DefaultOpen bool
-	connection DigitalReader
+	connection  DigitalReader
 	gobot.Eventer
 }
 
 //Return new LimitSwitch Driver fir given DigitalReader and pin
 //By default it's configured for end stops which are open if end is not detected (most of mechanical end stops)
 //If you are using different switch (ex. optical) set DefaultOpen = false
-func NewLimitSwitchDriver(a DigitalReader, pin string) *LimitSwitchDriver{
+func NewLimitSwitchDriver(a DigitalReader, pin string) *LimitSwitchDriver {
 	l := &LimitSwitchDriver{
-		name:       gobot.DefaultName("LimitSwitch"),
-		connection: a,
-		pin:        pin,
+		name:        gobot.DefaultName("LimitSwitch"),
+		connection:  a,
+		pin:         pin,
 		DefaultOpen: true,
-		Eventer:    gobot.NewEventer(),
+		Eventer:     gobot.NewEventer(),
 	}
 
 	l.AddEvent(Error)
@@ -30,6 +34,7 @@ func NewLimitSwitchDriver(a DigitalReader, pin string) *LimitSwitchDriver{
 	return l
 }
 
+// Func implements LimitSwitchDriverInterface interface
 func (l *LimitSwitchDriver) EndDetected() (bool, error) {
 	newValue, err := l.connection.DigitalRead(l.Pin())
 	if err != nil {
@@ -55,4 +60,3 @@ func (l *LimitSwitchDriver) Pin() string { return l.pin }
 
 // Connection returns the LimitWitchDriver Connection
 func (l *LimitSwitchDriver) Connection() gobot.Connection { return l.connection.(gobot.Connection) }
-

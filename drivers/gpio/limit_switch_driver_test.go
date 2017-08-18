@@ -1,11 +1,11 @@
 package gpio
 
 import (
-	"testing"
-	"strings"
-	"gobot.io/x/gobot/gobottest"
-	"time"
 	"github.com/pkg/errors"
+	"gobot.io/x/gobot/gobottest"
+	"strings"
+	"testing"
+	"time"
 )
 
 func initLimitSwitchDriver() *LimitSwitchDriver {
@@ -16,7 +16,9 @@ func TestLimitSwitchError(t *testing.T) {
 	sem := make(chan bool, 0)
 	a := newGpioTestAdaptor()
 	g := NewLimitSwitchDriver(a, "1")
-	g.On(Error, func(data interface{}){
+	gobottest.Refute(t, g.Connection(), nil)
+
+	g.On(Error, func(data interface{}) {
 		sem <- true
 	})
 
@@ -36,7 +38,7 @@ func TestLimitSwitchEndDetected(t *testing.T) {
 	sem := make(chan bool, 0)
 	a := newGpioTestAdaptor()
 	g := NewLimitSwitchDriver(a, "1")
-	g.On(EndDetected, func(data interface{}){
+	g.On(EndDetected, func(data interface{}) {
 		sem <- true
 	})
 
@@ -50,7 +52,6 @@ func TestLimitSwitchEndDetected(t *testing.T) {
 		t.Errorf("EndDetected shouldn't be published")
 	case <-time.After(250 * time.Millisecond):
 	}
-
 
 	a.TestAdaptorDigitalRead(func() (val int, err error) {
 		return 1, nil
@@ -102,4 +103,3 @@ func TestLimitSwitchDriverSetName(t *testing.T) {
 	g.SetName("myswitch")
 	gobottest.Assert(t, g.Name(), "myswitch")
 }
-
